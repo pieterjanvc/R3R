@@ -1,4 +1,4 @@
-# R3R - Code Rigour, Reproducibility and Responsibility in R
+# R3R - Code Rigor, Reproducibility and Responsibility in R
 
 This demo repo is used to teach coding practices that ensure robust and
 reproducible analyses.
