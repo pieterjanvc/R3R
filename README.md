@@ -3,9 +3,9 @@
 This demo repo is used to teach coding practices that ensure robust and
 reproducible analyses.
 
-The dummy project will provide some code related to single cell RNA sequencing,
-but has been written for demonstrating project organization and not actual
-analysis so do not use it for that purpose.
+The dummy project provides code related to metagenomic taxa counting based on
+read alignment, but has been written for demonstrating project organization and
+not actual analysis so do not use it for that purpose.
 
 The information below is a summary on how to setup a good R project for a data
 science project.

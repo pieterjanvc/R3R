@@ -2,24 +2,24 @@
 % Please edit documentation in R/simulation.R
 \name{simReadCounts}
 \alias{simReadCounts}
-\title{Simulate a very simple raw scRNA-seq expression matrix for testing}
+\title{Simulate a very simple metagenomic taxa count matrix for testing purposes}
 \usage{
-simReadCounts(nGenes, nCells, sparsity = 0.9, doublet = 0, lowQual = 0)
+simReadCounts(nTaxa, nSamples, sparsity, monoDom = 0, lowQual = 0)
 }
 \arguments{
-\item{nGenes}{The number of genes (rows) in the matrix}
+\item{nTaxa}{The number of taxa (rows) in the matrix}
 
-\item{nCells}{The number of cells (columns) in the matrix}
+\item{nSamples}{The number of samples (columns) in the matrix}
 
 \item{sparsity}{Default = 0.9. The sparsity of the matrix (percentage of 0's)}
 
-\item{doublet}{Default = 0. The percentage of doublets}
+\item{monoDom}{Default = 0. The percentage of samples with monoDom}
 
-\item{lowQual}{Default = 0. The percentage of low quality cells}
+\item{lowQual}{Default = 0. The percentage of low quality samples}
 }
 \value{
-genes by cell matrix with ransom read counts
+taxa by sample matrix with random read counts
 }
 \description{
-Simulate a very simple raw scRNA-seq expression matrix for testing
+Simulate a very simple metagenomic taxa count matrix for testing purposes
 }
