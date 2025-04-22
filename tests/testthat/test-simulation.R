@@ -1,14 +1,14 @@
 test_that("count distribution simulation", {
   # Generate data
   set.seed(1)
-  counts <- countDistr(1000, 10)
+  counts <- countDistr(1000, 10, sparsity = 0.9)
 
   # Check matrix shape
   expect_equal(nrow(counts), 1000)
   expect_equal(ncol(counts), 10)
 
   # Check values
-  check <- c(657, 589, 610, 592, 552, 696, 555, 644, 655, 634)
+  check <- c(2251, 2605, 2660, 2339, 2200, 2689, 2072, 2466, 2495, 2410)
   expect_equal(colSums(counts), check)
 
   # Check sparsity
@@ -23,14 +23,20 @@ test_that("count distribution simulation", {
 test_that("Count matrix simulation", {
   # Generate data
   set.seed(1)
-  readCounts <- simReadCounts(100, 100, doublet = 0.025, lowQual = 0.1)
+  readCounts <- simReadCounts(
+    100,
+    100,
+    sparsity = 0.75,
+    monoDom = 0.025,
+    lowQual = 0.1
+  )
 
-  # Check cell type counts
-  cellTypes <- sub("^([^_]+).*", "\\1", colnames(readCounts)) |>
+  # Check sample type counts
+  sampleTypes <- sub("^([^_]+).*", "\\1", colnames(readCounts)) |>
     table() |>
     c()
-  expect_equal(cellTypes, c(cell = 87, doublet = 3, lowQual = 10))
+  expect_equal(sampleTypes, c(lowQual = 10, monoDom = 3, sample = 87))
 
   # Check error
-  expect_error(simReadCounts(100, 100, doublet = 0.6, lowQual = 0.7))
+  expect_error(simReadCounts(100, 100, monoDom = 0.6, lowQual = 0.7))
 })

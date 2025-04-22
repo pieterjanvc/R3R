@@ -1,22 +1,32 @@
-# Code Reproducibility in R - Single Cell RNA-seq example
-# ///////////////////////////////////////////////////////
+# /// Microbiome Taxa Detection ///
+# /////////////////////////////////
 
-set.seed(1)
 #Simulate a raw read count matrix
-readCounts <- simReadCounts(20000, 250, doublet = 0.02, lowQual = 0.08)
+set.seed(10)
+readCounts <- simReadCounts(
+  nTaxa = 1500,
+  nSamples = 100,
+  sparsity = 0.75,
+  monoDom = 0.02,
+  lowQual = 0.08
+)
 
-# Check the distribution of the number of expressed genes per cell
-genesExprPerCell <- (readCounts > 0) |> colSums()
-genesExprPerCell |> hist()
+# Check the distribution of the number of expressed taxa per sample
+colSums(readCounts > 0) |> hist(main = "Taxa per sample")
 
-# Remove low quality samples (<500 expressed genes)
-highQual <- readCounts[, genesExprPerCell >= 500]
-(highQual > 0) |> colSums() |> hist()
+# Remove low quality samples (<25 reads for best taxon)
+lowQual <- apply(readCounts, 2, function(x) {
+  max(x) < 25
+})
 
-# Detect potential doublet cells (>2sd number of genes expressed)
-genesExprPerCell <- (highQual > 0) |> colSums()
-avgGexpr <- mean(genesExprPerCell)
-sdGexpr <- sd(genesExprPerCell)
+readCounts <- readCounts[, !lowQual]
+colSums(readCounts > 0) |> hist(main = "Taxa per sample")
 
-highQual <- highQual[, genesExprPerCell < avgGexpr + 2 * sdGexpr]
-(highQual > 0) |> colSums() |> hist()
+# Detect potential monodominant samples (1 species dominating the rest)
+monodominant <- apply(readCounts, 2, function(x) {
+  x = x[x > 0]
+  any(x > mean(x) + 5 * sd(x))
+})
+
+readCounts <- readCounts[, !monodominant]
+colSums(readCounts > 0) |> hist(main = "Taxa per sample")
